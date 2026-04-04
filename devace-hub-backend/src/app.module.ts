@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
-import { dataSourceOptions } from './database/data-source';
+import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProjectsModule } from './modules/projects/projects.module';
@@ -18,21 +17,13 @@ import { AppController } from './app.controller';
       isGlobal: true,
       load: [appConfig, databaseConfig],
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        ...dataSourceOptions,
-        autoLoadEntities: true,
-      }),
-    }),
+    DatabaseModule,
     UsersModule,
     AuthModule,
     ProjectsModule,
     ApiCollectionsModule,
     DockerModule,
     EnvsModule,
-    // Feature Modules will be added here
   ],
   controllers: [AppController],
   providers: [],
