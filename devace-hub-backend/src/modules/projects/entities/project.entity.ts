@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { ApiCollection } from '../../api-collections/entities/api-collection.entity';
+import { EnvVariable } from '../../envs/entities/env-variable.entity';
 
 @Entity('projects')
 export class Project {
@@ -32,4 +33,7 @@ export class Project {
 
   @OneToMany(() => ApiCollection, (apiCollection) => apiCollection.project)
   apiCollections: ApiCollection[];
+
+  @OneToMany(() => EnvVariable, (envVariable) => envVariable.project)
+  envVariables: EnvVariable[];
 }
